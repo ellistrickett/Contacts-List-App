@@ -24,7 +24,10 @@ def get_contacts():
     return contact_list
 
 # def search_contact(query):
-def search_contact(search_option, search_value):
+def search_contact(query):
+
+    search_option = query["search_option"]
+    search_value = query["search_value"]
 
     found_contact = {}
 
@@ -48,4 +51,5 @@ def search_contact(search_option, search_value):
     return found_contact
 
 def delete_contact(contact):
-    return True
+
+    contact_list.remove(contact)

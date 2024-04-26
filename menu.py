@@ -38,7 +38,31 @@ def option_2():
 
 def option_3():
 
-    print("How would you like to search for contact?")
+    query = get_search_query()
+
+    found_contact = search_contact(query)
+
+    if found_contact:
+        print("Found Contact:")
+        display_contact(found_contact)
+    else:
+        print("Contact not found")
+
+def option_4():
+
+    query = get_search_query()
+
+    found_contact = search_contact(query)
+
+    if found_contact:
+        delete_contact(found_contact)
+        print("Contact has been deleted")
+    else:
+        print("Unable to find contact")
+
+def get_search_query():
+
+    print("How would you like to search for the contact?")
 
     print("1. First Name")
     print("2. Last Name")
@@ -49,15 +73,7 @@ def option_3():
 
     search_value = input("Please enter the value you would like to search for? ")
 
-    found_contact = search_contact(search_option, search_value)
+    return { "search_option": search_option, "search_value": search_value}
 
-    if found_contact:
-        print("Found Contact:")
-        display_contact(found_contact)
-    else:
-        print("Contact not found")
 
-def option_4():
-    # delete_contact():
-   print("delete_contact()")
 
