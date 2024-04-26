@@ -2,7 +2,7 @@
 # Responsible for maintaining and modifying the contact list
 import json
 
-from contact import get_full_name
+# from contact import get_full_name
 
 contact_list = []
 

@@ -21,24 +21,11 @@ def option_1():
 
 def option_2():
 
-    contact =     {
-        "first_name": "",
-        "last_name": "",
-        "phone_number": "",
-        "email_address": ""
-    }
-
-    print("Please enter the following details for the contact you would like to add:")
-    contact["first_name"] = input("First Name: ")
-    contact["last_name"] = input("Last Name: ")
-    contact["phone_number"] = input("Phone Number: ")
-    contact["email_address"] = input("Email Address: ")
+    contact = input_contact()
     
     add_contact(contact)
 
-def option_3():
-
-    query = get_search_query()
+def option_3(query):
 
     found_contact = search_contact(query)
 
@@ -48,9 +35,7 @@ def option_3():
     else:
         print("Contact not found")
 
-def option_4():
-
-    query = get_search_query()
+def option_4(query):
 
     found_contact = search_contact(query)
 
@@ -60,7 +45,7 @@ def option_4():
     else:
         print("Unable to find contact")
 
-def get_search_query():
+def display_search_menu():
 
     print("How would you like to search for the contact?")
 
@@ -68,12 +53,6 @@ def get_search_query():
     print("2. Last Name")
     print("3. Phone Number")
     print("4. Email Address")
-
-    search_option = int(input())
-
-    search_value = input("Please enter the value you would like to search for? ")
-
-    return { "search_option": search_option, "search_value": search_value}
 
 
 
