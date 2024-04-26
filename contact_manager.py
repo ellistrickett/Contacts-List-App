@@ -11,11 +11,13 @@ def initialise_contact_list():
 
     for i in json.load(f):
         contact_list.append(i)
-        
+
     f.close()
 
 def add_contact(contact):
-    return True
+    contact_list.append(contact)
+    
+    return contact_list
 
 def get_contacts():
     

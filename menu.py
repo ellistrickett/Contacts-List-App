@@ -17,15 +17,25 @@ def display_contacts():
 
     for index, contact in enumerate(contacts_list, start=1):
         print("Contact", index)
-        print("First Name:", contact["first_name"])
+        print("First Name:", contact["first_name"]) 
         print("Last Name:", contact["last_name"])
         print("Phone Number:", contact["phone_number"])
         print("Email Address:", contact["email_address"])
 
 def option_2():
-    # add_contact():
-    
-   print("add_contact()")
+
+    contact =     {
+        "first_name": "",
+        "last_name": "",
+        "phone_number": "",
+        "email_address": ""
+    }
+
+    print("Please enter the following details for the contact you would like to add:")
+    contact["first_name"] = input("First Name: ")
+    contact["last_name"] = input("Last Name: ")
+    contact["phone_number"] = input("Phone Number: ")
+    contact["email_address"] = input("Email Address: ")
 
 def option_3():
     # search_contact():
