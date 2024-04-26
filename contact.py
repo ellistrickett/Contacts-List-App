@@ -10,7 +10,11 @@ def get_full_name(contact):
  
 
 def display_contact(contact):
-    return True
+    
+    print("First Name:", contact["first_name"]) 
+    print("Last Name:", contact["last_name"])
+    print("Phone Number:", contact["phone_number"])
+    print("Email Address:", contact["email_address"])
   
 
 def input_contact():

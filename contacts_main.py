@@ -1,7 +1,7 @@
 # contacts_main.py - Main Module
 # Responsible for displaying the menu and accepting user choices
 
-from menu import display_menu, display_contacts, option_2, option_3, option_4
+from menu import display_menu, option_1, option_2, option_3, option_4
 
 from contact_manager import initialise_contact_list
 
@@ -24,7 +24,7 @@ def main():
         choice = get_user_choice()
 
         if choice == 1:
-            display_contacts()
+            option_1()
         elif choice == 2:
             option_2()
         elif choice == 3:

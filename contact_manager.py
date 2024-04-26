@@ -16,19 +16,36 @@ def initialise_contact_list():
 
 def add_contact(contact):
     contact_list.append(contact)
-    
+
     return contact_list
 
 def get_contacts():
     
     return contact_list
 
-def search_contact(query):
-    # for i in contact_list:
-    #     if (i["first_name"] == 'Ellis'):
-    #         print(i["first_name"])
+# def search_contact(query):
+def search_contact(search_option, search_value):
 
-    return True
+    found_contact = {}
+
+    if search_option == 1:
+        for contact in contact_list:
+            if contact["first_name"] == search_value:
+                found_contact = contact
+    elif search_option == 2:
+        for contact in contact_list:
+            if contact["last_name"] == search_value:
+                found_contact = contact
+    elif search_option == 3:
+        for contact in contact_list:
+            if contact["phone_number"] == search_value:
+                found_contact = contact
+    elif search_option == 4:
+        for contact in contact_list:
+            if contact["email_address"] == search_value:
+                found_contact = contact
+
+    return found_contact
 
 def delete_contact(contact):
     return True
