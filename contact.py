@@ -8,8 +8,16 @@
 import phonenumbers
 import re
 
-# def create_contact(first_name, last_name, phone_number, email_address):
-#     return True
+def create_contact(first_name, last_name, phone_number, email_address):
+
+    contact =   {
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone_number": phone_number,
+        "email_address": email_address
+    }
+        
+    return contact
    
 # def get_full_name(contact):
 
@@ -70,11 +78,6 @@ def get_valid_email_address():
             is_email_valid = True
         else:
             print("Invalid Email, please try again")
-
-        
-
-
-
 
 
 
