@@ -6,6 +6,7 @@
 # Don't really need create_contact and get_full_name at this point
 
 import phonenumbers
+import re
 
 # def create_contact(first_name, last_name, phone_number, email_address):
 #     return True
@@ -39,7 +40,7 @@ def input_contact():
 
     contact["phone_number"] = get_valid_phone_number() 
 
-    contact["email_address"] = input("Email Address: ")
+    contact["email_address"] = get_valid_email_address()
 
     return contact
 
@@ -54,9 +55,23 @@ def get_valid_phone_number():
                 is_number_valid = True
                 return phone_number
             else:
-                print("Number is not valid, please try again with international code (+44)")
+                print("Number is not valid, please try again")
         except Exception as e:
             print(f"Error: {e}")
+
+def get_valid_email_address():
+    is_email_valid = False
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+
+    while is_email_valid == False:
+        email = input("Email Address: ")
+
+        if(re.fullmatch(regex, email)):
+            is_email_valid = True
+        else:
+            print("Invalid Email, please try again")
+
+        
 
 
 
