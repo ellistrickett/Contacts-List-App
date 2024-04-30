@@ -1,7 +1,9 @@
 # contacts_main.py - Main Module
 # Responsible for displaying the menu and accepting user choices
 
-from menu import display_menu, option_1, option_2, option_3, option_4, display_search_menu
+from tkinter import *
+
+from menu import display_menu, option_1, option_2, option_3, option_4, display_search_menu, Menu
 
 from contact_manager import initialise_contact_list
 
@@ -18,6 +20,10 @@ def main():
     # main_menu = MainMenu(contact_manager)
 
     initialise_contact_list()
+
+    root = Tk()
+    myGUI = Menu(root)
+    root.mainloop()
 
     while True:
         display_menu()
