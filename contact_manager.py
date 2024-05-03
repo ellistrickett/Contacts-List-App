@@ -23,30 +23,19 @@ def get_contacts():
     
     return contact_list
 
-# def search_contact(query):
 def search_contact(query):
-
-    search_option = query["search_option"]
-    search_value = query["search_value"]
 
     found_contact = {}
 
-    if search_option == 1:
-        for contact in contact_list:
-            if contact["first_name"] == search_value:
-                found_contact = contact
-    elif search_option == 2:
-        for contact in contact_list:
-            if contact["last_name"] == search_value:
-                found_contact = contact
-    elif search_option == 3:
-        for contact in contact_list:
-            if contact["phone_number"] == search_value:
-                found_contact = contact
-    elif search_option == 4:
-        for contact in contact_list:
-            if contact["email_address"] == search_value:
-                found_contact = contact
+    for contact in contact_list:
+        if contact["first_name"] == query:
+            found_contact = contact
+        elif contact["last_name"] == query:
+            found_contact = contact
+        elif contact["phone_number"] == query:
+            found_contact = contact
+        elif contact["email_address"] == query:
+            found_contact = contact
 
     return found_contact
 
