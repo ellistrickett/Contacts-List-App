@@ -20,6 +20,7 @@ class Menu():
         self.unchecked_image = ImageTk.PhotoImage(Image.open("unchecked.png").resize((10, 10)))
 
         self.button1 = Button(self.master, text="Display Contacts", command = self.display_contacts).grid(row=1, column=0)
+        self.button2 = Button(self.master, text="Add Contact", command = self.open_popup).grid(row=1, column=2)
         self.button4 = Button(self.master, text="Delete Contact", command = self.delete_contacts).grid(row=1, column=3)
         self.button5 = Button(self.master, text="Quit").grid(row=1, column=4)
 
@@ -44,37 +45,37 @@ class Menu():
 
         self.tree.grid(row = 2, columnspan = 5)
 
-        self.label_first_name = Label(self.master, text="First Name:")
-        self.label_first_name.grid(row = 3, column = 0)
+        # self.label_first_name = Label(self.master, text="First Name:")
+        # self.label_first_name.grid(row = 3, column = 0)
 
-        self.entry_first_name = Entry(self.master)
-        self.entry_first_name.grid(row = 3, column = 1)
+        # self.entry_first_name = Entry(self.master)
+        # self.entry_first_name.grid(row = 3, column = 1)
 
-        self.label_last_name = Label(self.master, text="Last Name:")
-        self.label_last_name.grid(row = 4, column = 0)
+        # self.label_last_name = Label(self.master, text="Last Name:")
+        # self.label_last_name.grid(row = 4, column = 0)
 
-        self.entry_last_name = Entry(self.master)
-        self.entry_last_name.grid(row = 4, column = 1)
+        # self.entry_last_name = Entry(self.master)
+        # self.entry_last_name.grid(row = 4, column = 1)
 
-        self.label_phone_number = Label(self.master, text="Phone Number:")
-        self.label_phone_number.grid(row = 5, column = 0)
+        # self.label_phone_number = Label(self.master, text="Phone Number:")
+        # self.label_phone_number.grid(row = 5, column = 0)
 
-        self.entry_phone_number = Entry(self.master)
-        self.entry_phone_number.grid(row = 5, column = 1)
+        # self.entry_phone_number = Entry(self.master)
+        # self.entry_phone_number.grid(row = 5, column = 1)
 
-        self.label_phone_number_notify = Label(self.master)
-        self.label_phone_number_notify.grid(row = 5, column = 2)
+        # self.label_phone_number_notify = Label(self.master)
+        # self.label_phone_number_notify.grid(row = 5, column = 2)
 
-        self.label_email_address = Label(self.master, text="Email Address:")
-        self.label_email_address.grid(row = 6, column = 0)
+        # self.label_email_address = Label(self.master, text="Email Address:")
+        # self.label_email_address.grid(row = 6, column = 0)
 
-        self.entry_email_address = Entry(self.master)
-        self.entry_email_address.grid(row = 6, column = 1)
+        # self.entry_email_address = Entry(self.master)
+        # self.entry_email_address.grid(row = 6, column = 1)
 
-        self.label_email_addrees_notify = Label(self.master)
-        self.label_email_addrees_notify.grid(row = 6, column = 2)
+        # self.label_email_addrees_notify = Label(self.master)
+        # self.label_email_addrees_notify.grid(row = 6, column = 2)
 
-        self.add_contact_button = Button(self.master, text="Add Contact", command = self.add_contact).grid(row=7, column=1)
+        # self.add_contact_button = Button(self.master, text="Add Contact", command = self.add_contact).grid(row=7, column=1)
 
         self.entry_search_bar = Entry(self.master)
         self.entry_search_bar.grid(row = 8, column = 0)
@@ -83,6 +84,44 @@ class Menu():
 
         self.label_search_bar_notify = Label(self.master)
         self.label_search_bar_notify.grid(row = 8, column = 2)
+
+
+    def open_popup(self):
+        self.contact_pop_up= Toplevel(self.master)
+        self.contact_pop_up.geometry("600x120")
+        self.contact_pop_up.title("Contact Window")
+        
+        self.label_first_name = Label(self.contact_pop_up, text="First Name:")
+        self.label_first_name.grid(row = 3, column = 0)
+
+        self.entry_first_name = Entry(self.contact_pop_up)
+        self.entry_first_name.grid(row = 3, column = 1)
+
+        self.label_last_name = Label(self.contact_pop_up, text="Last Name:")
+        self.label_last_name.grid(row = 4, column = 0)
+
+        self.entry_last_name = Entry(self.contact_pop_up)
+        self.entry_last_name.grid(row = 4, column = 1)
+
+        self.label_phone_number = Label(self.contact_pop_up, text="Phone Number:")
+        self.label_phone_number.grid(row = 5, column = 0)
+
+        self.entry_phone_number = Entry(self.contact_pop_up)
+        self.entry_phone_number.grid(row = 5, column = 1)
+
+        self.label_phone_number_notify = Label(self.contact_pop_up)
+        self.label_phone_number_notify.grid(row = 5, column = 2)
+
+        self.label_email_address = Label(self.contact_pop_up, text="Email Address:")
+        self.label_email_address.grid(row = 6, column = 0)
+
+        self.entry_email_address = Entry(self.contact_pop_up)
+        self.entry_email_address.grid(row = 6, column = 1)
+
+        self.label_email_addrees_notify = Label(self.contact_pop_up)
+        self.label_email_addrees_notify.grid(row = 6, column = 2)
+
+        self.add_contact_button = Button(self.contact_pop_up, text="Add Contact", command = self.add_contact).grid(row=7, column=1)
 
     def search_contact(self):
 
@@ -128,6 +167,8 @@ class Menu():
         if (is_email_valid and is_phone_valid["is_phone_valid"]):
             contact = create_contact(self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
             add_contact(contact)
+            self.contact_pop_up.destroy()
+            self.contact_pop_up.update()
 
     def select_row(self, event):
         
