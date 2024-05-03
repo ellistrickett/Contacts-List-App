@@ -5,6 +5,7 @@ from tkinter import *
 from tkinter.ttk import Treeview
 import re
 import phonenumbers
+from PIL import ImageTk, Image
 
 from contact_manager import get_contacts, add_contact, search_contact, delete_contact
 
@@ -15,20 +16,31 @@ class Menu():
         self.master = master
         self.master.title("MENU")
 
+        self.checked_image = ImageTk.PhotoImage(Image.open("approved.png").resize((10, 10)))
+        self.unchecked_image = ImageTk.PhotoImage(Image.open("unchecked.png").resize((10, 10)))
+
         self.button1 = Button(self.master, text="Display Contacts", command = self.display_contacts).grid(row=1, column=0)
-        self.button4 = Button(self.master, text="Delete Contact").grid(row=1, column=3)
+        self.button4 = Button(self.master, text="Delete Contact", command = self.delete_contacts).grid(row=1, column=3)
         self.button5 = Button(self.master, text="Quit").grid(row=1, column=4)
 
-        self.tree = Treeview(self.master, column=("c1", "c2", "c3", "c4"), show='headings', height=5)
+        self.tree = Treeview(self.master, column=(1, 2, 3, 4), height=5)
 
-        self.tree.column("# 1", anchor=CENTER)
-        self.tree.heading("# 1", text="First Name")
-        self.tree.column("# 2", anchor=CENTER)
-        self.tree.heading("# 2", text="Last Name")
-        self.tree.column("# 3", anchor=CENTER)
-        self.tree.heading("# 3", text="Phone Number")
-        self.tree.column("# 4", anchor=CENTER)
-        self.tree.heading("# 4", text="Email Address")
+        self.tree.tag_configure("checked", image = self.checked_image)
+        self.tree.tag_configure("unchecked", image = self.unchecked_image)
+
+        self.tree.column("# 0", anchor=CENTER)
+        self.tree.heading("# 0", text="")
+
+        self.tree.bind("<Button 1>", self.select_row)
+
+        self.tree.column(1, anchor=CENTER)
+        self.tree.heading(1, text="First Name")
+        self.tree.column(2, anchor=CENTER)
+        self.tree.heading(2, text="Last Name")
+        self.tree.column(2, anchor=CENTER)
+        self.tree.heading(3, text="Phone Number")
+        self.tree.column(4, anchor=CENTER)
+        self.tree.heading(4, text="Email Address")
 
         self.tree.grid(row = 2, columnspan = 5)
 
@@ -79,7 +91,7 @@ class Menu():
         if contact:
             self.remove_tree_contacts()
 
-            self.tree.insert('', 'end', text=1, values=(contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]))
+            self.tree.insert('', 'end', text=1, values=(contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]), image = "unchecked")
         else:
             self.label_search_bar_notify.config(text = "No Contact Found", fg = "red")
         
@@ -95,7 +107,7 @@ class Menu():
         contacts_list = get_contacts()
 
         for index, contact in enumerate(contacts_list, start=1): 
-            self.tree.insert('', 'end', text=index, values=(contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]))
+            self.tree.insert('', 'end', text=index, values=(contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]), tags = ("unchecked"))
 
     def add_contact(self):
 
@@ -116,6 +128,31 @@ class Menu():
         if (is_email_valid and is_phone_valid["is_phone_valid"]):
             contact = create_contact(self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
             add_contact(contact)
+
+    def select_row(self, event):
+        
+        row_id = self.tree.identify_row(event.y)
+        tag = self.tree.item(row_id, "tags")[0]
+        tags = list(self.tree.item(row_id, "tags"))
+        tags.remove(tag)
+        self.tree.item(row_id, tags = tags)
+
+        if tag == "checked":
+            self.tree.item(row_id, tags = "unchecked")
+        else:
+            self.tree.item(row_id, tags = "checked")
+
+    def delete_contacts(self):
+
+        for contact in self.tree.get_children():
+            tag = self.tree.item(contact, "tags")[0]
+            if tag == "checked":
+                self.tree.delete(contact)
+            
+
+
+
+
 
         # self.master.destroy()
 
