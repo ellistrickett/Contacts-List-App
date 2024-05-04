@@ -23,6 +23,16 @@ def get_contacts():
     
     return contact_list
 
+def get_contact_by_id(id):
+
+    found_contact = {}
+
+    for contact in contact_list:
+        if contact["id"] == int(id):
+            found_contact = contact
+    
+    return found_contact
+
 def search_contact(query):
 
     found_contact = {}
@@ -42,3 +52,12 @@ def search_contact(query):
 def delete_contact(contact):
 
     contact_list.remove(contact)
+
+def edit_contact(edit_contact):
+
+    found_contact = get_contact_by_id(edit_contact["id"])
+
+    if found_contact:
+        delete_contact(found_contact)
+
+        add_contact(edit_contact)

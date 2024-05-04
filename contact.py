@@ -8,9 +8,10 @@
 import phonenumbers
 import re
 
-def create_contact(first_name, last_name, phone_number, email_address):
+def create_contact(id, first_name, last_name, phone_number, email_address):
 
     contact =   {
+        "id": id,
         "first_name": first_name,
         "last_name": last_name,
         "phone_number": phone_number,
