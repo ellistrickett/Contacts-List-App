@@ -107,6 +107,9 @@ class Menu():
 
         checked_contacts = self.get_checked_tree_contacts()
 
+        if len(checked_contacts) == 0:
+            return self.open_no_contact_selected_warning(True)
+
         for contact in checked_contacts:
             self.tree.delete(contact)
             contact_id = list(self.tree.item(contact).values())[2][0]
@@ -118,6 +121,8 @@ class Menu():
 
             if len(checked_contacts) > 1:
                 return self.open_edit_multiple_popup_warning()
+            elif len(checked_contacts) == 0:
+                return self.open_no_contact_selected_warning(False)
 
             contact_id = list(self.tree.item(checked_contacts[0]).values())[2][0]
             self.contact_for_popup = get_contact_by_id(contact_id)
@@ -211,11 +216,30 @@ class Menu():
         self.edit_multiple_popup.title("Edit Multiple Popup Warning")
 
         self.edit_multiple_popup_label = Label(self.edit_multiple_popup, 
-                                               text="Error: You cannot edit multiple contcts at once. Please check one box at a time", 
+                                               text="Warning: You cannot edit multiple contcts at once. Please check one box at a time", 
                                                fg='red')
         self.edit_multiple_popup_label.grid(row = 0, column = 0)
 
         self.close_pop_up_button = Button(self.edit_multiple_popup, text="Ok", command = self.edit_multiple_popup.destroy).grid(row=1, column=0)
+
+    def open_no_contact_selected_warning(self, isDelete):
+        self.no_contact_selected_popup= Toplevel(self.master)
+        self.no_contact_selected_popup.geometry("600x150")
+        self.no_contact_selected_popup.title("No Contact Selected")
+
+        warning_text = ""
+
+        if isDelete:
+            warning_text = "Warning: You must select one contact to delete contact"
+        else:
+            warning_text = "Warning: You must select one contact to edit contact"
+
+        self.no_contact_selected_label = Label(self.no_contact_selected_popup, 
+                                               text=warning_text, 
+                                               fg='red')
+        self.no_contact_selected_label.grid(row = 0, column = 0)
+
+        self.no_contact_selected_button = Button(self.no_contact_selected_popup, text="Ok", command = self.no_contact_selected_popup.destroy).grid(row=1, column=0)
 
     def validate_contact_input(self):
         is_email_valid = validate_email(self.entry_email_address.get())
