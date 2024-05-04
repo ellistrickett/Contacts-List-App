@@ -93,23 +93,25 @@ class Menu():
         else:
             self.tree.item(row_id, tags = "checked")
 
-    def delete_contacts(self):
-
+    def get_checked_tree_contact(self):
         for contact in self.tree.get_children():
             tag = self.tree.item(contact, "tags")[0]
             if tag == "checked":
-                self.tree.delete(contact)
+                return contact
 
-        # Needs to delete from contacts_manager
+    def delete_contacts(self):
+
+        checked_contact = self.get_checked_tree_contact()
+        self.tree.delete(checked_contact)
+        contact_id = list(self.tree.item(checked_contact).values())[2][0]
+        delete_contact(get_contact_by_id(contact_id))
 
     def open_popup(self, isEdit):
         if isEdit:
-            for contact in self.tree.get_children():
-                tag = self.tree.item(contact, "tags")[0]
-                if tag == "checked":
-                    contact_id = list(self.tree.item(contact).values())[2][0]
-                    self.contact_for_popup = get_contact_by_id(contact_id)
-        
+            checked_contact = self.get_checked_tree_contact()
+            contact_id = list(self.tree.item(checked_contact).values())[2][0]
+            self.contact_for_popup = get_contact_by_id(contact_id)
+
         self.contact_pop_up= Toplevel(self.master)
         self.contact_pop_up.geometry("600x150")
         self.contact_pop_up.title("Contact Window")
