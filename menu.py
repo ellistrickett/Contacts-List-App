@@ -3,8 +3,6 @@
 
 from tkinter import *
 from tkinter.ttk import Treeview
-import re
-import phonenumbers
 from PIL import ImageTk, Image
 import uuid
 
@@ -20,11 +18,11 @@ class Menu():
         self.checked_image = ImageTk.PhotoImage(Image.open("approved.png").resize((10, 10)))
         self.unchecked_image = ImageTk.PhotoImage(Image.open("unchecked.png").resize((10, 10)))
 
-        self.button1 = Button(self.master, text="Display Contacts", command = self.display_contacts).grid(row=1, column=0)
-        self.button2 = Button(self.master, text="Edit Contact", command = self.edit_popup).grid(row=1, column=1)
-        self.button3 = Button(self.master, text="Add Contact", command = self.add_popup).grid(row=1, column=2)
-        self.button4 = Button(self.master, text="Delete Contact", command = self.delete_contacts).grid(row=1, column=3)
-        self.button5 = Button(self.master, text="Quit").grid(row=1, column=4)
+        Button(self.master, text="Display Contacts", command = self.display_contacts).grid(row=1, column=0)
+        Button(self.master, text="Edit Contact", command = self.edit_popup).grid(row=1, column=1)
+        Button(self.master, text="Add Contact", command = self.add_popup).grid(row=1, column=2)
+        Button(self.master, text="Delete Contact", command = self.delete_contacts).grid(row=1, column=3)
+        Button(self.master, text="Quit", command = self.master.destroy).grid(row=1, column=4)
 
         self.tree = Treeview(self.master, column=(1, 2, 3, 4, 5), height=5)
 
@@ -50,7 +48,7 @@ class Menu():
         self.entry_search_bar = Entry(self.master)
         self.entry_search_bar.grid(row = 8, column = 0)
 
-        self.button_search_bar = Button(self.master, text="Search Contact", command = self.search_contact).grid(row=8, column=1)
+        Button(self.master, text="Search Contact", command = self.search_contact).grid(row=8, column=1)
 
         self.label_search_bar_notify = Label(self.master)
         self.label_search_bar_notify.grid(row = 8, column = 2)
@@ -60,9 +58,10 @@ class Menu():
         contact = search_contact(self.entry_search_bar.get())
 
         if contact:
+            self.label_search_bar_notify.config(text = "")
             self.remove_tree_contacts()
 
-            self.tree.insert('', 'end', text=1, values=(contact["id"], contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]), image = "unchecked")
+            self.tree.insert('', 'end', text=1, values=(contact["id"], contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]), tags = ("unchecked"))
         else:
             self.label_search_bar_notify.config(text = "No Contact Found", fg = "red")
         
@@ -225,16 +224,18 @@ class Menu():
             warning_title = "Edit Multiple Popup Warning"
             warning_text = "Warning: You cannot edit multiple contcts at once. Please check one box at a time"
 
-        self.popup_warning= Toplevel(self.master)
+        self.popup_warning = Toplevel(self.master)
         self.popup_warning.geometry("600x150")
         self.popup_warning.title(warning_title)
 
-        self.popup_warning_label = Label(self.popup_warning, 
-                                               text=warning_text, 
-                                               fg='red')
-        self.popup_warning_label.grid(row = 0, column = 0)
+        frame = Frame(self.popup_warning)
+        frame.place(relx=0.5, rely=0.5, anchor="c")
 
-        self.close_pop_up_button = Button(self.popup_warning, text="Ok", command = self.popup_warning.destroy).grid(row=1, column=0)
+        self.popup_warning_label = Label(frame, text=warning_text, fg='red')
+        self.popup_warning_label.grid(row=0, column=0, columnspan=2)
+
+        self.close_pop_up_button = Button(frame, text="Ok", command = self.popup_warning.destroy)
+        self.close_pop_up_button.grid(row=1, column=0, columnspan=2)
 
     def validate_contact_input(self):
         is_email_valid = validate_email(self.entry_email_address.get())
@@ -253,6 +254,4 @@ class Menu():
 
         if (is_email_valid and is_phone_valid["is_phone_valid"]):
            return True
-        
-        # self.master.destroy()
 
