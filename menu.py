@@ -93,23 +93,33 @@ class Menu():
         else:
             self.tree.item(row_id, tags = "checked")
 
-    def get_checked_tree_contact(self):
+    def get_checked_tree_contacts(self):
+        checked_contacts = []
+
         for contact in self.tree.get_children():
             tag = self.tree.item(contact, "tags")[0]
             if tag == "checked":
-                return contact
+                checked_contacts.append(contact)
+
+        return checked_contacts
 
     def delete_contacts(self):
 
-        checked_contact = self.get_checked_tree_contact()
-        self.tree.delete(checked_contact)
-        contact_id = list(self.tree.item(checked_contact).values())[2][0]
-        delete_contact(get_contact_by_id(contact_id))
+        checked_contacts = self.get_checked_tree_contacts()
+
+        for contact in checked_contacts:
+            self.tree.delete(contact)
+            contact_id = list(self.tree.item(contact).values())[2][0]
+            delete_contact(get_contact_by_id(contact_id))
 
     def open_popup(self, isEdit):
         if isEdit:
-            checked_contact = self.get_checked_tree_contact()
-            contact_id = list(self.tree.item(checked_contact).values())[2][0]
+            checked_contacts = self.get_checked_tree_contacts()
+
+            if len(checked_contacts) > 1:
+                return self.open_edit_multiple_popup_warning()
+
+            contact_id = list(self.tree.item(checked_contacts[0]).values())[2][0]
             self.contact_for_popup = get_contact_by_id(contact_id)
 
         self.contact_pop_up= Toplevel(self.master)
@@ -194,6 +204,18 @@ class Menu():
         self.contact_pop_up.destroy()
         self.contact_pop_up.update()
         self.display_contacts()
+
+    def open_edit_multiple_popup_warning(self):
+        self.edit_multiple_popup= Toplevel(self.master)
+        self.edit_multiple_popup.geometry("600x150")
+        self.edit_multiple_popup.title("Edit Multiple Popup Warning")
+
+        self.edit_multiple_popup_label = Label(self.edit_multiple_popup, 
+                                               text="Error: You cannot edit multiple contcts at once. Please check one box at a time", 
+                                               fg='red')
+        self.edit_multiple_popup_label.grid(row = 0, column = 0)
+
+        self.close_pop_up_button = Button(self.edit_multiple_popup, text="Ok", command = self.edit_multiple_popup.destroy).grid(row=1, column=0)
 
     def validate_contact_input(self):
         is_email_valid = validate_email(self.entry_email_address.get())
