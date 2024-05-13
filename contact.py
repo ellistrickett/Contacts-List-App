@@ -4,6 +4,7 @@
 # You may add extra fields to the contact record
 
 
+# Class responsible for Contact and ca be called to create one providing the required instance attributes
 class Contact:
     def __init__(self, id, first_name, last_name, phone_number, email_address):
         self.id = id
