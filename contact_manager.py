@@ -7,12 +7,17 @@ import json
 contact_list = []
 
 def initialise_contact_list(): 
-    f = open('contact_list.json')
+    file = open('contact_list.json')
 
-    for i in json.load(f):
+    for i in json.load(file):
         contact_list.append(i)
+        
+    file.close()
 
-    f.close()
+def write_contact_list_to_file():
+
+    with open("contact_list.json", "w") as file:
+        json.dump(contact_list, file)
 
 def add_contact(contact):
     contact_list.append(contact)
@@ -28,7 +33,7 @@ def get_contact_by_id(id):
     found_contact = {}
 
     for contact in contact_list:
-        if contact["id"] == int(id):
+        if contact["id"] == id:
             found_contact = contact
     
     return found_contact

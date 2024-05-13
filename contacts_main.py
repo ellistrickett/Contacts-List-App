@@ -5,7 +5,7 @@ from tkinter import *
 
 from menu import Menu
 
-from contact_manager import initialise_contact_list
+from contact_manager import initialise_contact_list, write_contact_list_to_file
 
 def main():
     
@@ -16,6 +16,8 @@ def main():
     root = Tk()
     myGUI = Menu(root)
     root.mainloop()
+
+    write_contact_list_to_file()
 
 if __name__ == "__main__":
     main()

@@ -108,11 +108,13 @@ class Menu():
 
         if len(checked_contacts) == 0:
             return self.open_popup_warning("delete")
+        
+        # cant delete multiple contacts
 
         for contact in checked_contacts:
-            self.tree.delete(contact)
             contact_id = list(self.tree.item(contact).values())[2][0]
             delete_contact(get_contact_by_id(contact_id))
+            self.display_contacts()
 
     def open_popup(self, isEdit):
         if isEdit:
@@ -191,7 +193,7 @@ class Menu():
         is_valid_contact = self.validate_contact_input()
 
         if is_valid_contact:
-            contact = create_contact(uuid.uuid4(), self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
+            contact = create_contact(str(uuid.uuid4()), self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
             add_contact(contact)
             self.close_popup()
 
