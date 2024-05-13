@@ -5,19 +5,21 @@ from tkinter import *
 
 from menu import Menu
 
-from contact_manager import initialise_contact_list, write_contact_list_to_file
+from contact_manager import ContactManager
 
-def main():
-    
-    # main_menu = MainMenu(contact_manager)
+class ContactsMain:
+    def __init__(self):
+        self.contact_manager = ContactManager()
 
-    initialise_contact_list()
+    def run(self):
+        self.contact_manager.initialise_contact_list()
 
-    root = Tk()
-    myGUI = Menu(root)
-    root.mainloop()
+        root = Tk()
+        myGUI = Menu(root, self.contact_manager)
+        root.mainloop()
 
-    write_contact_list_to_file()
+        self.contact_manager.write_contact_list_to_file()
 
 if __name__ == "__main__":
-    main()
+    main = ContactsMain()
+    main.run()

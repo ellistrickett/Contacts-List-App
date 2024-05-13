@@ -6,14 +6,16 @@ from tkinter.ttk import Treeview
 from PIL import ImageTk, Image
 import uuid
 
-from contact_manager import get_contacts, add_contact, search_contact, delete_contact, edit_contact, get_contact_by_id
+from contact_manager import ContactManager
 
-from contact import create_contact, validate_email, validate_phone
+from contact import Contact
 
 class Menu():
-    def __init__(self, master):
+    def __init__(self, master, contact_manager):
         self.master = master
         self.master.title("MENU")
+
+        self.contact_manager = contact_manager
 
         self.checked_image = ImageTk.PhotoImage(Image.open("approved.png").resize((10, 10)))
         self.unchecked_image = ImageTk.PhotoImage(Image.open("unchecked.png").resize((10, 10)))
@@ -55,13 +57,13 @@ class Menu():
 
     def search_contact(self):
 
-        contact = search_contact(self.entry_search_bar.get())
+        contact = self.contact_manager.search_contact(self.entry_search_bar.get())
 
         if contact:
             self.label_search_bar_notify.config(text = "")
             self.remove_tree_contacts()
 
-            self.tree.insert('', 'end', text=1, values=(contact["id"], contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]), tags = ("unchecked"))
+            self.tree.insert('', 'end', text=1, values=(contact.id, contact.first_name, contact.last_name, contact.phone_number, contact.email_address), tags = ("unchecked"))
         else:
             self.label_search_bar_notify.config(text = "No Contact Found", fg = "red")
         
@@ -74,10 +76,10 @@ class Menu():
 
         self.remove_tree_contacts()
 
-        contacts_list = get_contacts()
+        contacts_list = self.contact_manager.get_contacts()
 
         for index, contact in enumerate(contacts_list, start=1): 
-            self.tree.insert('', 'end', text=index, values=(contact["id"], contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]), tags = ("unchecked"))
+            self.tree.insert('', 'end', text=index, values=(contact.id, contact.first_name, contact.last_name, contact.phone_number, contact.email_address), tags = ("unchecked"))
 
     def select_row(self, event):
         
@@ -108,13 +110,12 @@ class Menu():
 
         if len(checked_contacts) == 0:
             return self.open_popup_warning("delete")
-        
-        # cant delete multiple contacts
 
         for contact in checked_contacts:
             contact_id = list(self.tree.item(contact).values())[2][0]
-            delete_contact(get_contact_by_id(contact_id))
-            self.display_contacts()
+            self.contact_manager.delete_contact(self.contact_manager.get_contact_by_id(contact_id))
+            
+        self.display_contacts()
 
     def open_popup(self, isEdit):
         if isEdit:
@@ -126,14 +127,14 @@ class Menu():
                 return self.open_popup_warning("edit")
 
             contact_id = list(self.tree.item(checked_contacts[0]).values())[2][0]
-            self.contact_for_popup = get_contact_by_id(contact_id)
+            self.contact_for_popup = self.contact_manager.get_contact_by_id(contact_id)
 
         self.contact_pop_up= Toplevel(self.master)
         self.contact_pop_up.geometry("600x150")
         self.contact_pop_up.title("Contact Window")
 
         if isEdit:
-            self.label_id = Label(self.contact_pop_up, text = f'Id: {self.contact_for_popup["id"]}')
+            self.label_id = Label(self.contact_pop_up, text = f'Id: {self.contact_for_popup.id}')
             self.label_id.grid(row = 3, column = 0)
 
         self.label_first_name = Label(self.contact_pop_up, text="First Name:")
@@ -175,10 +176,10 @@ class Menu():
         self.label_email_addrees_notify.grid(row = 7, column = 2)
 
         if isEdit:
-            self.entry_first_name.insert(0, self.contact_for_popup["first_name"])
-            self.entry_last_name.insert(0, self.contact_for_popup["last_name"])
-            self.entry_phone_number.insert(0, self.contact_for_popup["phone_number"])
-            self.entry_email_address.insert(0, self.contact_for_popup["email_address"])
+            self.entry_first_name.insert(0, self.contact_for_popup.first_name)
+            self.entry_last_name.insert(0, self.contact_for_popup.last_name)
+            self.entry_phone_number.insert(0, self.contact_for_popup.phone_number)
+            self.entry_email_address.insert(0, self.contact_for_popup.email_address)
             self.edit_contact_button = Button(self.contact_pop_up, text="Edit Contact", command = self.edit_contact).grid(row=8, column=1)
         else:
             self.add_contact_button = Button(self.contact_pop_up, text="Add Contact", command = self.add_contact).grid(row=8, column=1)
@@ -193,8 +194,8 @@ class Menu():
         is_valid_contact = self.validate_contact_input()
 
         if is_valid_contact:
-            contact = create_contact(str(uuid.uuid4()), self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
-            add_contact(contact)
+            contact = Contact(str(uuid.uuid4()), self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
+            self.contact_manager.add_contact(contact)
             self.close_popup()
 
     def edit_contact(self):
@@ -202,8 +203,8 @@ class Menu():
         is_valid_contact = self.validate_contact_input()
 
         if is_valid_contact:
-            contact = create_contact(self.contact_for_popup["id"], self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
-            edit_contact(contact)
+            contact = Contact(self.contact_for_popup.id, self.entry_first_name.get(), self.entry_last_name.get(), self.entry_phone_number.get(), self.entry_email_address.get())
+            self.contact_manager.edit_contact(contact)
             self.close_popup()
 
     def close_popup(self):
@@ -240,20 +241,20 @@ class Menu():
         self.close_pop_up_button.grid(row=1, column=0, columnspan=2)
 
     def validate_contact_input(self):
-        is_email_valid = validate_email(self.entry_email_address.get())
+        is_email_valid = self.contact_manager.validate_email(self.entry_email_address.get())
 
         if is_email_valid:
             self.label_email_addrees_notify.config(text = "Valid Email Address", fg = "green")
         else:
             self.label_email_addrees_notify.config(text = "Please enter valid email address", fg = "red")
 
-        is_phone_valid = validate_phone(self.entry_phone_number.get())
+        is_phone_valid, message = self.contact_manager.validate_phone(self.entry_phone_number.get())
 
-        if is_phone_valid["is_phone_valid"]:
-            self.label_phone_number_notify.config(text = is_phone_valid["message"], fg = "green")
+        if is_phone_valid:
+            self.label_phone_number_notify.config(text = message, fg = "green")
         else:
-            self.label_phone_number_notify.config(text = is_phone_valid["message"], fg = "red")
+            self.label_phone_number_notify.config(text = message, fg = "red")
 
-        if (is_email_valid and is_phone_valid["is_phone_valid"]):
+        if (is_email_valid and is_phone_valid):
            return True
 
