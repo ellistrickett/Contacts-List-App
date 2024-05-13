@@ -1,20 +1,31 @@
 # contact_manager.py - Contact Manager Module
 # Responsible for maintaining and modifying the contact list
 import json
-import phonenumbers
 import re
+
+import phonenumbers
+
 from contact import Contact
+
 
 class ContactManager:
     def __init__(self):
         self.contact_list = []
 
-    def initialise_contact_list(self): 
-        file = open('contact_list.json')
+    def initialise_contact_list(self):
+        file = open("contact_list.json")
 
         for contact in json.load(file):
-            self.contact_list.append(Contact(contact["id"], contact["first_name"], contact["last_name"], contact["phone_number"], contact["email_address"]))
-            
+            self.contact_list.append(
+                Contact(
+                    contact["id"],
+                    contact["first_name"],
+                    contact["last_name"],
+                    contact["phone_number"],
+                    contact["email_address"],
+                )
+            )
+
         file.close()
 
     def write_contact_list_to_file(self):
@@ -28,7 +39,7 @@ class ContactManager:
         return self.contact_list
 
     def get_contacts(self):
-        
+
         return self.contact_list
 
     def get_contact_by_id(self, id):
@@ -38,7 +49,7 @@ class ContactManager:
         for contact in self.contact_list:
             if contact.id == id:
                 found_contact = contact
-        
+
         return found_contact
 
     def search_contact(self, query):
@@ -48,7 +59,7 @@ class ContactManager:
         for contact in self.contact_list:
             if contact.first_name == query:
                 found_contact = contact
-            elif contact.last_name== query:
+            elif contact.last_name == query:
                 found_contact = contact
             elif contact.phone_number == query:
                 found_contact = contact
@@ -79,13 +90,12 @@ class ContactManager:
             else:
                 return False, "Please enter valid phone number"
         except Exception as e:
-                return False, f"Error: {e}"
-
+            return False, f"Error: {e}"
 
     def validate_email(self, email_address):
-        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+        regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
 
-        if (re.fullmatch(regex, email_address)):
+        if re.fullmatch(regex, email_address):
             return True
         else:
             return False

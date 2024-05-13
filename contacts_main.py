@@ -3,9 +3,9 @@
 
 from tkinter import *
 
+from contact_manager import ContactManager
 from menu import Menu
 
-from contact_manager import ContactManager
 
 class ContactsMain:
     def __init__(self):
@@ -19,6 +19,7 @@ class ContactsMain:
         root.mainloop()
 
         self.contact_manager.write_contact_list_to_file()
+
 
 if __name__ == "__main__":
     main = ContactsMain()
