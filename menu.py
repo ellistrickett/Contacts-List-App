@@ -112,7 +112,7 @@ class Menu:
                     contact.last_name,
                     contact.phone_number,
                     contact.email_address,
-                    contact.date_time_added,
+                    contact.date_time_updated,
                 ),
                 tags=("unchecked"),
             )
@@ -144,7 +144,7 @@ class Menu:
                     contact.last_name,
                     contact.phone_number,
                     contact.email_address,
-                    contact.date_time_added,
+                    contact.date_time_updated,
                 ),
                 tags=("unchecked"),
             )
@@ -230,11 +230,11 @@ class Menu:
                 self.contact_pop_up, text=f"Id: {self.contact_for_popup.id}"
             )
             self.label_id.grid(row=3, column=0)
-            self.label_date_time_added = Label(
+            self.label_date_time_updated = Label(
                 self.contact_pop_up,
-                text=f"Last Updated: {self.contact_for_popup.date_time_added}",
+                text=f"Last Updated: {self.contact_for_popup.date_time_updated}",
             )
-            self.label_date_time_added.grid(row=8, column=0)
+            self.label_date_time_updated.grid(row=8, column=0)
 
         # Create form for user to enter contact details
         self.label_first_name = Label(self.contact_pop_up, text="First Name:")

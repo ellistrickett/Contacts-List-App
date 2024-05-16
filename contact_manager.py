@@ -32,7 +32,7 @@ class ContactManager:
                     contact["last_name"],
                     contact["phone_number"],
                     contact["email_address"],
-                    contact["date_time_added"],
+                    contact["date_time_updated"],
                 )
             )
 
