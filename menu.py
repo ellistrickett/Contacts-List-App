@@ -2,6 +2,7 @@
 # Responsible for displaying and implementing the menu options
 
 # Import external libraries
+import datetime
 import uuid
 from tkinter import *
 from tkinter.ttk import Treeview
@@ -49,7 +50,7 @@ class Menu:
         )
 
         # Initiate a treeview to display contacts in a table
-        self.tree = Treeview(self.master, column=(1, 2, 3, 4, 5), height=5)
+        self.tree = Treeview(self.master, column=(1, 2, 3, 4, 5, 6), height=5)
 
         # Configure 2 tags for checked and unchecked with the appropiate image
         self.tree.tag_configure("checked", image=self.checked_image)
@@ -70,6 +71,8 @@ class Menu:
         self.tree.heading(4, text="Phone Number")
         self.tree.column(5, anchor=CENTER)
         self.tree.heading(5, text="Email Address")
+        self.tree.column(6, anchor=CENTER)
+        self.tree.heading(6, text="Last Updated")
 
         # Position the table
         self.tree.grid(row=2, columnspan=5)
@@ -109,6 +112,7 @@ class Menu:
                     contact.last_name,
                     contact.phone_number,
                     contact.email_address,
+                    contact.date_time_added,
                 ),
                 tags=("unchecked"),
             )
@@ -140,6 +144,7 @@ class Menu:
                     contact.last_name,
                     contact.phone_number,
                     contact.email_address,
+                    contact.date_time_added,
                 ),
                 tags=("unchecked"),
             )
@@ -216,7 +221,7 @@ class Menu:
 
         # Initiate popup with dimensions and title
         self.contact_pop_up = Toplevel(self.master)
-        self.contact_pop_up.geometry("600x150")
+        self.contact_pop_up.geometry("600x170")
         self.contact_pop_up.title("Contact Window")
 
         # If it is edit window then show id
@@ -225,6 +230,11 @@ class Menu:
                 self.contact_pop_up, text=f"Id: {self.contact_for_popup.id}"
             )
             self.label_id.grid(row=3, column=0)
+            self.label_date_time_added = Label(
+                self.contact_pop_up,
+                text=f"Last Updated: {self.contact_for_popup.date_time_added}",
+            )
+            self.label_date_time_added.grid(row=8, column=0)
 
         # Create form for user to enter contact details
         self.label_first_name = Label(self.contact_pop_up, text="First Name:")
@@ -282,7 +292,7 @@ class Menu:
             self.entry_email_address.insert(0, self.contact_for_popup.email_address)
             self.edit_contact_button = Button(
                 self.contact_pop_up, text="Edit Contact", command=self.edit_contact
-            ).grid(row=8, column=1)
+            ).grid(row=9, column=1)
         else:
             self.add_contact_button = Button(
                 self.contact_pop_up, text="Add Contact", command=self.add_contact
@@ -310,6 +320,7 @@ class Menu:
                 self.entry_last_name.get(),
                 self.entry_phone_number.get(),
                 self.entry_email_address.get(),
+                str(datetime.datetime.now()),
             )
             # Add contact to ContactManager list
             result = self.contact_manager.add_contact(contact)
@@ -331,6 +342,7 @@ class Menu:
                 self.entry_last_name.get(),
                 self.entry_phone_number.get(),
                 self.entry_email_address.get(),
+                str(datetime.datetime.now()),
             )
             # Edit Contact in ContactManager List
             self.contact_manager.edit_contact(contact)
