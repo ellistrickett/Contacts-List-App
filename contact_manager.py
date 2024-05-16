@@ -65,13 +65,9 @@ class ContactManager:
 
     def get_contact_by_id(self, id):
 
-        found_contact = {}
-
         for contact in self.contact_list:
             if contact.id == id:
-                found_contact = contact
-
-        return found_contact
+                return contact
 
     def search_contact(self, query):
 

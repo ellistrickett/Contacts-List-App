@@ -96,6 +96,26 @@ class TestContactManager(unittest.TestCase):
         self.assertEqual(contact_manager.get_contacts(), [])
         contact_manager.get_contacts()
 
+    def test_get_contact_by_id(self):
+
+        test_contact_object = Contact(
+            "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91",
+            "Darwin",
+            "Nunez",
+            "+447519371555",
+            "darwin@darwin.com",
+            "2024-05-16 19:19:11.077222",
+        )
+
+        contact_manager = ContactManager()
+        contact_manager.contact_list = [test_contact_object]
+
+        self.assertEqual(
+            contact_manager.get_contact_by_id("a1ffb27c-f1d1-4e60-bf82-0f94f7434e91"),
+            test_contact_object,
+        )
+        contact_manager.get_contacts()
+
 
 # test_contact_darwin = Contact(
 #     "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91",
