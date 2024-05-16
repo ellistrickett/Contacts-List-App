@@ -16,6 +16,7 @@ class TestContactManager(unittest.TestCase):
                 "last_name": "Nunez",
                 "phone_number": "+447519371555",
                 "email_address": "darwin@darwin.com",
+                "date_time_updated": "2024-05-16 19:19:11.077222",
             },
             {
                 "id": "1fcd6501-6f43-4bcc-b579-1b8785cc3683",
@@ -23,6 +24,7 @@ class TestContactManager(unittest.TestCase):
                 "last_name": "Salah",
                 "phone_number": "+12332322774",
                 "email_address": "mo@mo.com",
+                "date_time_updated": "2024-05-16 19:19:11.077222",
             },
         ]
         contact_manager = ContactManager()
@@ -60,6 +62,7 @@ class TestContactManager(unittest.TestCase):
             "Nunez",
             "+447519371555",
             "darwin@darwin.com",
+            "2024-05-16 19:19:11.077222",
         }
 
         contact_manager = ContactManager()
@@ -76,6 +79,7 @@ class TestContactManager(unittest.TestCase):
             "Nunez",
             "+447519371555",
             "darwin@darwin.com",
+            "2024-05-16 19:19:11.077222",
         )
 
         contact_manager.add_contact(test_contact_object)
@@ -84,6 +88,13 @@ class TestContactManager(unittest.TestCase):
         self.assertEqual(
             contact_manager.contact_list[0].id, "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91"
         )
+
+    def test_get_contacts(self):
+
+        contact_manager = ContactManager()
+
+        self.assertEqual(contact_manager.get_contacts(), [])
+        contact_manager.get_contacts()
 
 
 # test_contact_darwin = Contact(
