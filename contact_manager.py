@@ -57,7 +57,7 @@ class ContactManager:
             # Should have validation on frontend and backend but this isnt traditional application
             print("Cannot add contact to contact list as not a Contact Object")
 
-    # Retrun the contacts list
+    # Return the contacts list
     def get_contacts(self):
 
         return self.contact_list
@@ -122,7 +122,4 @@ class ContactManager:
     def validate_email(self, email_address):
         regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
 
-        if re.fullmatch(regex, email_address):
-            return True
-        else:
-            return False
+        return re.fullmatch(regex, email_address)

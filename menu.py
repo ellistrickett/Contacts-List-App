@@ -235,6 +235,9 @@ class Menu:
         self.entry_first_name = Entry(self.contact_pop_up, textvariable=first_name)
         self.entry_first_name.grid(row=4, column=1)
 
+        self.label_first_name_notify = Label(self.contact_pop_up)
+        self.label_first_name_notify.grid(row=4, column=2)
+
         self.label_last_name = Label(self.contact_pop_up, text="Last Name:")
         self.label_last_name.grid(row=5, column=0)
 
@@ -242,6 +245,9 @@ class Menu:
 
         self.entry_last_name = Entry(self.contact_pop_up, textvariable=last_name)
         self.entry_last_name.grid(row=5, column=1)
+
+        self.label_last_name_notify = Label(self.contact_pop_up)
+        self.label_last_name_notify.grid(row=5, column=2)
 
         self.label_phone_number = Label(self.contact_pop_up, text="Phone Number:")
         self.label_phone_number.grid(row=6, column=0)
@@ -373,6 +379,25 @@ class Menu:
 
     # Validate contact input before adding or editing and display error to user
     def validate_contact_input(self):
+
+        is_first_name_valid = self.entry_first_name.get().isalpha()
+
+        if is_first_name_valid:
+            self.label_first_name_notify.config(text="Valid First Name", fg="green")
+        else:
+            self.label_first_name_notify.config(
+                text="Please enter valid first name", fg="red"
+            )
+
+        is_last_name_valid = self.entry_last_name.get().isalpha()
+
+        if is_last_name_valid:
+            self.label_last_name_notify.config(text="Valid Last Name", fg="green")
+        else:
+            self.label_last_name_notify.config(
+                text="Please enter valid last name", fg="red"
+            )
+
         is_email_valid = self.contact_manager.validate_email(
             self.entry_email_address.get()
         )
@@ -395,5 +420,10 @@ class Menu:
         else:
             self.label_phone_number_notify.config(text=message, fg="red")
 
-        if is_email_valid and is_phone_valid:
+        if (
+            is_email_valid
+            and is_phone_valid
+            and is_first_name_valid
+            and is_last_name_valid
+        ):
             return True
