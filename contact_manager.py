@@ -12,11 +12,12 @@ class ContactManager:
     def __init__(self):
         # When ContactManager is initialised create contact list array to hold contacts to be used in the Table
         self.contact_list = []
+        self.file_name = "contact_list.json"
 
     # Read json file and add contacts to contact_list
     def initialise_contact_list(self):
         # Open the file with file name and set variable
-        file = open("contact_list.json")
+        file = open(self.file_name)
 
         # Load the file using json external library method
         # Loop through objects and set variable as contact
@@ -42,7 +43,7 @@ class ContactManager:
     def write_contact_list_to_file(self):
 
         # Open file and prepare to w (Write)
-        with open("contact_list.json", "w") as file:
+        with open(self.file_name, "w") as file:
             # Using the json library serialise the contact_list as string
             # Default vars required to serialise classes
             json.dump(self.contact_list, file, default=vars)
