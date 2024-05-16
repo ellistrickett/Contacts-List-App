@@ -51,6 +51,40 @@ class TestContactManager(unittest.TestCase):
         arguments = {"file": "contact_list.json", "mode": "w"}
         mock_open.asset_called_with(arguments)
 
+    @mock.patch("contact_manager.print")
+    def test_add_contact(self, mock_print):
+
+        test_contact = {
+            "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91",
+            "Darwin",
+            "Nunez",
+            "+447519371555",
+            "darwin@darwin.com",
+        }
+
+        contact_manager = ContactManager()
+        contact_manager.add_contact(test_contact)
+
+        argument = "Cannot add contact to contact list as not a Contact Object"
+
+        self.assertEqual(len(contact_manager.contact_list), 0)
+        mock_print.asset_called_with(argument)
+
+        test_contact_object = Contact(
+            "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91",
+            "Darwin",
+            "Nunez",
+            "+447519371555",
+            "darwin@darwin.com",
+        )
+
+        contact_manager.add_contact(test_contact_object)
+
+        self.assertEqual(len(contact_manager.contact_list), 1)
+        self.assertEqual(
+            contact_manager.contact_list[0].id, "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91"
+        )
+
 
 # test_contact_darwin = Contact(
 #     "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91",

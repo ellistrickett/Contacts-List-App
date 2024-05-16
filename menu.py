@@ -306,7 +306,8 @@ class Menu:
                 self.entry_email_address.get(),
             )
             # Add contact to ContactManager list
-            self.contact_manager.add_contact(contact)
+            result = self.contact_manager.add_contact(contact)
+
             # Close Popup
             self.close_popup()
 

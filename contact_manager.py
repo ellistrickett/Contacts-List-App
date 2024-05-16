@@ -50,7 +50,12 @@ class ContactManager:
 
     # Add the contact to the contact list
     def add_contact(self, contact):
-        self.contact_list.append(contact)
+        if isinstance(contact, Contact):
+            self.contact_list.append(contact)
+        else:
+            # Not a good way to handle this.
+            # Should have validation on frontend and backend but this isnt traditional application
+            print("Cannot add contact to contact list as not a Contact Object")
 
     # Retrun the contacts list
     def get_contacts(self):
