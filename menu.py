@@ -22,10 +22,18 @@ class Menu:
         # Create reference for ContactManager object create in contacts_main
         self.contact_manager = contact_manager
 
-        # Open checkbox images and create a reference
+        # Vecteezy, 2024. "Check mark line icon isolated on white background." [Online]
+        # Place of publication: https://www.vecteezy.com/.
+        # Available from: https://www.vecteezy.com/vector-art/17624668-check-mark-line-icon-isolated-on-white-background-black-flat-thin-icon-on-modern-outline-style-linear-symbol-and-editable-stroke-simple-and-pixel-perfect-stroke-vector-illustration
+        # [Accessed 17 May 2024]
+        # Open checkbox images
         self.checked_image = ImageTk.PhotoImage(
             Image.open("approved.png").resize((10, 10))
         )
+        # OpenMoji. "stop button" [Online]
+        # Place of publication: https://openmoji.org/.
+        # Available from: https://openmoji.org/library/emoji-23F9/
+        # [Accessed 17 May 2024]
         self.unchecked_image = ImageTk.PhotoImage(
             Image.open("unchecked.png").resize((10, 10))
         )
