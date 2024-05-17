@@ -115,6 +115,10 @@ class ContactManager:
         except Exception as e:
             return False, f"Error: {e}"
 
+    # GeeksForGeeks, 2023. "Check if email address valid or not in Python" [Online]
+    # Place of publication: https://www.geeksforgeeks.org.
+    # Available from: https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
+    # [Accessed 17 May 2024]
     # Validate email using regex and return true or false
     def validate_email(self, email_address):
         regex = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b"
