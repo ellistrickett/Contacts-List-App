@@ -88,18 +88,18 @@ class ContactManager:
         return found_contact
 
     def delete_contact(self, contact):
-        # Remove contact from contact list
-        self.contact_list.remove(contact)
-
-    def edit_contact(self, edit_contact):
 
         # Find contact using the edited contacts Id
-        found_contact = self.get_contact_by_id(edit_contact.id)
+        found_contact = self.get_contact_by_id(contact.id)
 
         # If contact is found, delete it and the add the edited contact
         if found_contact:
-            self.delete_contact(found_contact)
+            # Remove contact from contact list
+            self.contact_list.remove(contact)
 
+    def edit_contact(self, edit_contact):
+
+        if self.delete_contact(edit_contact):
             self.add_contact(edit_contact)
 
     # Validate phone number using external library and return tuple

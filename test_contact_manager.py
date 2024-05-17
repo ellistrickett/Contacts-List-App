@@ -115,3 +115,69 @@ class TestContactManager(unittest.TestCase):
             contact_manager.get_contact_by_id("a1ffb27c-f1d1-4e60-bf82-0f94f7434e91"),
             None,
         )
+
+    def test_search_contact(self):
+        contact_manager = ContactManager()
+        contact_manager.contact_list = [
+            self.test_contact_object_darwin,
+            self.test_contact_object_mo,
+        ]
+
+        self.assertEqual(
+            contact_manager.search_contact("Darwin"),
+            self.test_contact_object_darwin,
+        )
+
+        self.assertEqual(
+            contact_manager.search_contact("Salah"),
+            self.test_contact_object_mo,
+        )
+
+        self.assertEqual(
+            contact_manager.search_contact("+12332322774"),
+            self.test_contact_object_mo,
+        )
+
+        self.assertEqual(
+            contact_manager.search_contact("mo@mo.com"),
+            self.test_contact_object_mo,
+        )
+
+    def test_delete_contact(self):
+        contact_manager = ContactManager()
+        contact_manager.contact_list = [
+            self.test_contact_object_darwin,
+            self.test_contact_object_mo,
+        ]
+
+        contact_manager.delete_contact(self.test_contact_object_mo)
+
+        self.assertEqual(
+            len(contact_manager.contact_list),
+            1,
+        )
+
+        self.assertEqual(
+            contact_manager.contact_list[0],
+            self.test_contact_object_darwin,
+        )
+
+    def test_edit_contact(self):
+        contact_manager = ContactManager()
+        contact_manager.contact_list = [
+            self.test_contact_object_darwin,
+            self.test_contact_object_mo,
+        ]
+
+        test_edit_contact_object_darwin = Contact(
+            "a1ffb27c-f1d1-4e60-bf82-0f94f7434e91",
+            "Darwin",
+            "Nunez",
+            "+447586545975",
+            "darwin@darwin.com",
+            "2024-05-16 19:19:11.077222",
+        )
+
+        contact_manager.edit_contact(test_edit_contact_object_darwin)
+
+        self.assertEqual(contact_manager.contact_list[1].phone_number, "+447586545975")
